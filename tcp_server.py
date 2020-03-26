@@ -1,4 +1,4 @@
-# Server branch (master)
+# Golden1 branch
 
 import socket
 import os
