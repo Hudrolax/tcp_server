@@ -11,7 +11,13 @@ import subprocess
 OWN_TCP_SERVER_ADDRESS = ('', 8686)
 cpu_percent = 0
 virtual_memory = 0
-starttime = datetime.now() 
+starttime = datetime.now()
+
+def KillMetaTrader5Process():
+	if datetime.now().hour == 8 and datetime.now().minute == 1:
+		for proc in psutil.process_iter():
+			if proc.name() == 'metatester64.exe':
+				proc.kill()
 
 def DifferenceBetweenDate(date1,date2):
 	duration = date2 - date1
@@ -143,4 +149,5 @@ TCPServerThread.start()
 while True:
 	cpu_percent = psutil.cpu_percent(interval=5)
 	virtual_memory = psutil.virtual_memory()[2]
+	KillMetaTrader5Process()
 	sleep(5)
