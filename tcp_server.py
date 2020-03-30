@@ -12,6 +12,9 @@ OWN_TCP_SERVER_ADDRESS = ('', 8686)
 cpu_percent = 0
 virtual_memory = 0
 starttime = datetime.now()
+boolCheckServices = True
+stopCheckServicesTimer = datetime.now()
+servicesCheckList = ["SQLSERVERAGENT","MSSQLSERVER","1C:Enterprise 8.3 Server Agent (x86-64)"]
 
 def KillMetaTrader5Process():
 	if datetime.now().hour == 8 and datetime.now().minute == 1:
@@ -94,6 +97,8 @@ def TCPServer():
 	global cpu_percent
 	global virtual_memory
 	global starttime
+	global stopCheckServicesTimer
+	global boolCheckServices
 
 	server_socket = socket.socket()
 	server_socket.bind(OWN_TCP_SERVER_ADDRESS)
@@ -138,10 +143,29 @@ def TCPServer():
 			GetAndUpdateThread.start()
 			answer = 'update is started'
 		elif data == 'get_log':
-			answer = GetLog()						
+			answer = GetLog()
+		elif data == 'stop_check_services':
+			boolCheckServices = False
+			stopCheckServicesTimer = datetime.now()						
 				
 		connection.send(bytes(answer, encoding='UTF-8'))
 		connection.close()
+
+class ServicesWatchdogClass():
+	def __init__(self,serviceList):
+		self.serviceList = serviceList
+
+	def CheckServices(self):
+		for serviceName in self.serviceList: 
+			for p in psutil.win_service_iter():
+				if p.name() == serviceName:
+					if str(p.status()) == 'stopped':
+						print(f"{p.name()} - {p.status()}")
+						output = os.popen(f'net start "{serviceName}"').readlines()
+						print(output)
+						print(f"{p.name()} - {p.status()}")
+
+ServicesWatchdog = ServicesWatchdogClass(servicesCheckList)
 
 TCPServerThread = threading.Thread(target=TCPServer, args=(), daemon=True)
 TCPServerThread.start()
@@ -150,4 +174,9 @@ while True:
 	cpu_percent = psutil.cpu_percent(interval=5)
 	virtual_memory = psutil.virtual_memory()[2]
 	KillMetaTrader5Process()
+	if boolCheckServices:
+		ServicesWatchdog.CheckServices()
+	else:
+		if (datetime.now()-stopCheckServicesTimer).total_seconds() > 3600*3:
+			 boolCheckServices = True
 	sleep(5)
