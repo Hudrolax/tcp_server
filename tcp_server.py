@@ -20,7 +20,10 @@ def KillMetaTrader5Process():
 	if datetime.now().hour == 8 and datetime.now().minute == 1:
 		for proc in psutil.process_iter():
 			if proc.name() == 'metatester64.exe':
-				proc.kill()
+				try:
+					proc.kill()
+				except:
+					pass
 
 def DifferenceBetweenDate(date1,date2):
 	duration = date2 - date1
