@@ -82,16 +82,16 @@ class BaseBackup_class():
 		else:
 			return False
 #									(name,path,file_prefix,time expiration in sec)
-Trade2019backupFull = BaseBackup_class('Trade2019full','f:\\backup\\full','Trade2019_backup_',612000)
-Trade2019backupDiff = BaseBackup_class('Trade2019diff','f:\\backup\\Diff\\Trade2019','Trade2019_backup_',90000)
-BuhBackupFull = BaseBackup_class('BuhFull','f:\\backup\\full','buh_backup_',612000)
+Trade2019newbackupFull = BaseBackup_class('Trade2019newfull','f:\\backup\\full','Trade2019new_backup_',633600)
+Trade2019newbackupDiff = BaseBackup_class('Trade2019newdiff','f:\\backup\\Diff\\Trade2019new','Trade2019new_backup_',90000)
+BuhBackupFull = BaseBackup_class('BuhFull','f:\\backup\\full','buh_backup_',633600)
 BuhBackupDiff = BaseBackup_class('BuhDiff','f:\\backup\\Diff\\buh','buh_backup_',90000)
-ZupBackupFull = BaseBackup_class('ZupFull','f:\\backup\\full','zup_backup_',612000)
+ZupBackupFull = BaseBackup_class('ZupFull','f:\\backup\\full','zup_backup_',633600)
 ZupBackupDiff = BaseBackup_class('ZupDiff','f:\\backup\\Diff\\zup','zup_backup_',90000)
-UATBackupFull = BaseBackup_class('UATFull','f:\\backup\\full','UAT_backup_',612000)
+UATBackupFull = BaseBackup_class('UATFull','f:\\backup\\full','UAT_backup_',633600)
 UATBackupDiff = BaseBackup_class('UATDiff','f:\\backup\\Diff\\uat','UAT_backup_',90000)
 
-backup_base_list = [Trade2019backupFull,Trade2019backupDiff,BuhBackupFull,BuhBackupDiff,ZupBackupFull,ZupBackupDiff,UATBackupFull,UATBackupDiff]					 
+backup_base_list = [Trade2019newbackupFull,Trade2019newbackupDiff,BuhBackupFull,BuhBackupDiff,ZupBackupFull,ZupBackupDiff,UATBackupFull,UATBackupDiff]					 
 
 def ClerStr(str_):
 	str_ = str(str_)
