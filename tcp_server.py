@@ -206,13 +206,15 @@ def TCPServer():
 			connection.close()
 		except:
 			pass
-		sleep(0.5)		
+		sleep(0.5)
 
-TCPServerThread = threading.Thread(target=TCPServer, args=(), daemon=True)
-TCPServerThread.start()
+if __name__ == '__main__':
+	print('TCP server started')
+	TCPServerThread = threading.Thread(target=TCPServer, args=(), daemon=True)
+	TCPServerThread.start()
 
-while True:
-	cpu_percent = psutil.cpu_percent(interval=5)
-	virtual_memory = psutil.virtual_memory()[2]
-	KillMetaTrader5Process()
-	sleep(5)
+	while True:
+		cpu_percent = psutil.cpu_percent(interval=5)
+		virtual_memory = psutil.virtual_memory()[2]
+		KillMetaTrader5Process()
+		sleep(5)
